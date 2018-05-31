@@ -1,0 +1,37 @@
+//lights
+int AIN1 = 7;
+int AIN2 = 8;
+int BIN1 = 9;
+int BIN2 = 10;
+void setup() {
+  Serial.begin(19200);
+  pinMode(A0, INPUT);
+  pinMode(A1, INPUT);
+  pinMode(AIN1, OUTPUT);
+  pinMode(AIN2, OUTPUT);
+  pinMode(BIN1, OUTPUT);
+  pinMode(BIN2, OUTPUT);
+}
+
+void loop() {
+  int value;
+  int value2;
+  value = analogRead(A0) - 240;
+  Serial.print(value);
+  Serial.print("  ");
+  value2 = analogRead(A1);
+  Serial.println(value2);
+
+  if (value > value2) { //turn right
+    digitalWrite(AIN1, HIGH);
+    digitalWrite(AIN2, LOW);
+    digitalWrite(BIN1, LOW);
+    digitalWrite(BIN2, HIGH);
+  }
+  else { //turn left
+    digitalWrite(AIN1, LOW);
+    digitalWrite(AIN2, HIGH);
+    digitalWrite(BIN1, HIGH);
+    digitalWrite(BIN2, LOW);
+  }
+}

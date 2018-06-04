@@ -1,0 +1,83 @@
+#include <IRremote.h>
+
+int RECV_PIN = 4;
+int motorPWM = 9; //
+int AIN1 = 7;
+int AIN2 = 8;
+int BIN1 = 11; //was 9 
+int BIN2 = 10;
+IRrecv irrecv(RECV_PIN);
+decode_results results;
+
+void setup()
+{
+  Serial.begin(19200);
+  irrecv.enableIRIn();
+  pinMode(motorPWM, OUTPUT);
+  pinMode(AIN1, OUTPUT);
+  pinMode(AIN2, OUTPUT);
+  pinMode(BIN1, OUTPUT);
+  pinMode(BIN2, OUTPUT);
+}
+
+void forward(int howFast) {
+  digitalWrite(AIN1, HIGH);
+  digitalWrite(AIN2, LOW);
+  digitalWrite(BIN1, HIGH);
+  digitalWrite(BIN2, LOW);
+  analogWrite(motorPWM, howFast);
+}
+
+void backward(int howFast) {
+  digitalWrite(AIN1, LOW);
+  digitalWrite(AIN2, HIGH);
+  digitalWrite(BIN1, LOW);
+  digitalWrite(BIN2, HIGH);
+  analogWrite(motorPWM, howFast);
+}
+
+void right(int howFast) {
+  digitalWrite(AIN1, HIGH);
+  digitalWrite(AIN2, LOW);
+  digitalWrite(BIN1, LOW);
+  digitalWrite(BIN2, HIGH);
+  analogWrite(motorPWM, howFast);
+}
+
+void left(int howFast) {
+  digitalWrite(AIN1, LOW);
+  digitalWrite(AIN2, HIGH);
+  digitalWrite(BIN1, HIGH);
+  digitalWrite(BIN2, LOW);
+  analogWrite(motorPWM, howFast); 
+}
+
+void loop()
+{
+  if (irrecv.decode(&results)) {
+    if (results.value == 0xF24119FE) { //up
+      forward(255);
+    }
+    else if (results.value == 0xB489062B) { //down
+      backward(190);
+    }
+    else if (results.value == 0xBC9DF06) { //right
+      right(128);
+    }
+    else if (results.value == 0xC53794B4) { //left
+     left(128); 
+    }
+    else if (results.value == 0x75A956A7) { //stop (ok button)
+      digitalWrite(AIN1, LOW);
+      digitalWrite(AIN2, LOW);
+      digitalWrite(BIN1, LOW);
+      digitalWrite(BIN2, LOW);
+    }
+    else {
+      Serial.print("Unrecognized: ");
+      Serial.print(results.value, HEX);
+      Serial.println();
+    }
+    irrecv.resume();
+  }
+}

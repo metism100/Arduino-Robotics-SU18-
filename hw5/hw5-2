@@ -1,0 +1,74 @@
+int triggerPin = 13;
+int echoPin = 12;
+int AIN1 = 7;
+int AIN2 = 8;
+int BIN1 = 11;
+int BIN2 = 10;
+
+void setup() {
+  Serial.begin(19200);
+  //pinMode(motorPWM, OUTPUT);
+  pinMode(triggerPin, OUTPUT);
+  pinMode(echoPin, INPUT);
+  digitalWrite(triggerPin, LOW);
+  pinMode(AIN1, OUTPUT);
+  pinMode(AIN2, OUTPUT);
+  pinMode(BIN1, OUTPUT);
+  pinMode(BIN2, OUTPUT);
+}
+void loop() {
+  float inches = ping();
+  Serial.println(inches);
+  delay(60);
+
+if (inches > 20)
+  {
+    //move forward
+    
+      digitalWrite(AIN1, HIGH);
+      digitalWrite(AIN2, LOW);
+      digitalWrite(BIN1, HIGH);
+      digitalWrite(BIN2, LOW);
+     
+  }
+  else if (inches < 20)
+  {
+    //stop
+      digitalWrite(AIN1, LOW);
+      digitalWrite(AIN2, LOW);
+      digitalWrite(BIN1, LOW);
+      digitalWrite(BIN2, LOW);
+      delay(200); 
+   //turn right 90degress   
+      digitalWrite(AIN1, HIGH);
+      digitalWrite(AIN2, LOW);
+      digitalWrite(BIN1, LOW);
+      digitalWrite(BIN2, HIGH);
+      delay(250);
+//stop
+      digitalWrite(AIN1, LOW);
+      digitalWrite(AIN2, LOW);
+      digitalWrite(BIN1, LOW);
+      digitalWrite(BIN2, LOW);
+     
+ }
+}
+
+float ping() {
+  unsigned long maxTime = 20000;
+  unsigned long us;
+  float inches;
+  // Hold triggerPin high for at least 10us
+  digitalWrite(triggerPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(triggerPin, LOW);
+  // Measure length of high pulse on echoPin
+  us = pulseIn(echoPin, HIGH, maxTime);
+  // pulseIn returns 0 on timeout.  Assume worst case.
+  if (us == 0) {
+    us = maxTime;
+  }
+  // Convert roundtrip microseconds to inches
+  inches = us * 0.013504 / 2;
+  return inches;
+}

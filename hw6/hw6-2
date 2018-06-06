@@ -1,0 +1,35 @@
+#include <Servo.h>
+int servoPin = 6;
+Servo servo;
+
+void setup() {
+  Serial.begin(19200);
+  servo.attach(servoPin);
+  
+  void loop() {
+  int i;
+  int t;
+  
+  /*for (i = 0; i < 91; i++) {
+    Serial.println(i);
+    servo.write(i);
+    delay(20);
+    }
+    t = millis();
+    Serial.print("time ");
+    Serial.print (t);
+    delay(1000);
+    //18350 ms 90
+    }*/
+
+  for (i = 0; i < 181; i++) {
+    Serial.println(i);
+    servo.write(i);
+    delay(20);
+  }
+  t = millis();
+  Serial.print("time ");
+  Serial.print (t);
+  delay(1000);
+  //36530 ms 180
+}

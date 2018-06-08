@@ -1,0 +1,49 @@
+int ledPin = 13;
+int ledOnTime = 1000;
+int ledOffTime = 500;
+int ledState = 0;
+unsigned long ledTimer;
+
+void setup()
+{
+  pinMode(ledPin, OUTPUT);
+}
+
+void ledSM()
+{
+  // State: TurnOn
+  if (ledState == 0)
+  {
+    digitalWrite(ledPin, HIGH);
+    ledTimer = millis();
+    ledState++;
+  }
+  // State: Wait 1
+  if (ledState == 1)
+  {
+    if (millis() - ledTimer > ledOnTime)
+    {
+      ledState++;
+    }
+  }
+  // State: Turn Off
+  if (ledState == 2)
+  {
+    digitalWrite(ledPin, LOW);
+    ledTimer = millis();
+    ledState++;
+  }
+  // State: Wait 2
+  if (ledState == 3)
+  {
+    if (millis() - ledTimer > ledOffTime)
+    {
+      ledState = 0;
+    }
+  }
+}
+
+void loop()
+{
+  ledSM();
+}

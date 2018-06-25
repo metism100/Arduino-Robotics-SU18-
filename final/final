@@ -1,0 +1,260 @@
+#include <IRremote.h>
+#include <Servo.h>
+
+int RECV_PIN = 4;
+int servoPin = 6;
+int AIN1 = 7;
+int AIN2 = 8;
+int BIN1 = 9;
+int BIN2 = 10;
+int i;
+IRrecv irrecv(RECV_PIN);
+decode_results results;
+Servo servo;
+
+void setup()
+{
+  Serial.begin(19200);
+  irrecv.enableIRIn();
+  pinMode(AIN1, OUTPUT);
+  pinMode(AIN2, OUTPUT);
+  pinMode(BIN1, OUTPUT);
+  pinMode(BIN2, OUTPUT);
+  servo.attach(servoPin);
+}
+
+void pendown() {
+  i = 100;
+  servo.write(i);
+}
+
+void penup() {
+  i = 15;
+  servo.write(i);
+}
+
+void circle () {
+  digitalWrite(AIN1, HIGH);
+  digitalWrite(AIN2, LOW);
+  digitalWrite(BIN1, LOW);
+  digitalWrite(BIN2, HIGH);
+  delay(2000);
+
+  digitalWrite(AIN1, LOW);
+  digitalWrite(AIN2, LOW);
+  digitalWrite(BIN1, LOW);
+  digitalWrite(BIN2, LOW);
+}
+
+void halfcircle()
+{
+  digitalWrite(AIN1, HIGH);
+  digitalWrite(AIN2, LOW);
+  digitalWrite(BIN1, LOW);
+  digitalWrite(BIN2, HIGH);
+  delay(610);
+  digitalWrite(AIN1, HIGH);
+  digitalWrite(AIN2, LOW);
+  digitalWrite(BIN1, HIGH);
+  digitalWrite(BIN2, LOW);
+  delay(600);
+  digitalWrite(AIN1, LOW);
+  digitalWrite(AIN2, LOW);
+  digitalWrite(BIN1, LOW);
+  digitalWrite(BIN2, LOW);
+}
+
+void fatstar()
+{
+  digitalWrite(AIN1, HIGH);
+  digitalWrite(AIN2, LOW);
+  digitalWrite(BIN1, HIGH);
+  digitalWrite(BIN2, LOW);
+  delay(100);
+  digitalWrite(AIN1, HIGH);
+  digitalWrite(AIN2, LOW);
+  digitalWrite(BIN1, LOW);
+  digitalWrite(BIN2, HIGH);
+  delay(225);
+  digitalWrite(AIN1, HIGH);
+  digitalWrite(AIN2, LOW);
+  digitalWrite(BIN1, HIGH);
+  digitalWrite(BIN2, LOW);
+  delay(100);
+  digitalWrite(AIN1, HIGH);
+  digitalWrite(AIN2, LOW);
+  digitalWrite(BIN1, LOW);
+  digitalWrite(BIN2, HIGH);
+  delay(225);
+  digitalWrite(AIN1, HIGH);
+  digitalWrite(AIN2, LOW);
+  digitalWrite(BIN1, HIGH);
+  digitalWrite(BIN2, LOW);
+  delay(100);
+  digitalWrite(AIN1, HIGH);
+  digitalWrite(AIN2, LOW);
+  digitalWrite(BIN1, LOW);
+  digitalWrite(BIN2, HIGH);
+  delay(225);
+  digitalWrite(AIN1, HIGH);
+  digitalWrite(AIN2, LOW);
+  digitalWrite(BIN1, HIGH);
+  digitalWrite(BIN2, LOW);
+  delay(100);
+  digitalWrite(AIN1, HIGH);
+  digitalWrite(AIN2, LOW);
+  digitalWrite(BIN1, LOW);
+  digitalWrite(BIN2, HIGH);
+  delay(225);
+  digitalWrite(AIN1, HIGH);
+  digitalWrite(AIN2, LOW);
+  digitalWrite(BIN1, HIGH);
+  digitalWrite(BIN2, LOW);
+  delay(100);
+  digitalWrite(AIN1, HIGH);
+  digitalWrite(AIN2, LOW);
+  digitalWrite(BIN1, LOW);
+  digitalWrite(BIN2, HIGH);
+  delay(225);
+  digitalWrite(AIN1, HIGH);
+  digitalWrite(AIN2, LOW);
+  digitalWrite(BIN1, HIGH);
+  digitalWrite(BIN2, LOW);
+  delay(100);
+  digitalWrite(AIN1, HIGH);
+  digitalWrite(AIN2, LOW);
+  digitalWrite(BIN1, LOW);
+  digitalWrite(BIN2, HIGH);
+  delay(225);
+
+  void glasses() {
+    digitalWrite(AIN1, HIGH);
+    digitalWrite(AIN2, LOW);
+    digitalWrite(BIN1, LOW);
+    digitalWrite(BIN2, HIGH);
+    delay(610);
+    digitalWrite(AIN1, HIGH);
+    digitalWrite(AIN2, LOW);
+    digitalWrite(BIN1, HIGH);
+    digitalWrite(BIN2, LOW);
+    delay(600);
+    digitalWrite(AIN1, LOW);
+    digitalWrite(AIN2, HIGH);
+    digitalWrite(BIN1, HIGH);
+    digitalWrite(BIN2, LOW);
+    delay(610);
+    digitalWrite(AIN1, HIGH);
+    digitalWrite(AIN2, LOW);
+    digitalWrite(BIN1, HIGH);
+    digitalWrite(BIN2, LOW);
+    delay(600);
+  }
+
+  void wave() {
+    //only move right
+    digitalWrite(AIN1, HIGH);
+    digitalWrite(AIN2, LOW);
+    digitalWrite(BIN1, LOW);
+    digitalWrite(BIN2, LOW);
+    delay(600);
+    digitalWrite(AIN1, HIGH);
+    digitalWrite(AIN2, LOW);
+    digitalWrite(BIN1, HIGH);
+    digitalWrite(BIN2, LOW);
+    delay(50);
+    digitalWrite(AIN1, LOW);
+    digitalWrite(AIN2, LOW);
+    digitalWrite(BIN1, HIGH);
+    digitalWrite(BIN2, LOW);
+    delay(600);
+    digitalWrite(AIN1, HIGH);
+    digitalWrite(AIN2, LOW);
+    digitalWrite(BIN1, HIGH);
+    digitalWrite(BIN2, LOW);
+    delay(50);
+    digitalWrite(AIN1, HIGH);
+  }
+
+  void loop() {
+    penup();
+    if (irrecv.decode(&results)) {
+      if (results.value == 0xE0E006F9) { //up
+        pendown();
+        digitalWrite(AIN1, HIGH);
+        digitalWrite(AIN2, LOW);
+        digitalWrite(BIN1, HIGH);
+        digitalWrite(BIN2, LOW);
+      }
+      else if (results.value == 0xE0E08679) { //down
+        i = 15;
+        servo.write(i);
+        digitalWrite(AIN1, LOW);
+        digitalWrite(AIN2, HIGH);
+        digitalWrite(BIN1, LOW);
+        digitalWrite(BIN2, HIGH);
+      }
+      else if (results.value == 0xE0E046B9) { //right
+        penup();
+        digitalWrite(AIN1, HIGH);
+        digitalWrite(AIN2, LOW);
+        digitalWrite(BIN1, LOW);
+        digitalWrite(BIN2, HIGH);
+      }
+      else if (results.value == 0xE0E0A659) { //left
+        penup();
+        digitalWrite(AIN1, LOW);
+        digitalWrite(AIN2, HIGH);
+        digitalWrite(BIN1, HIGH);
+        digitalWrite(BIN2, LOW);
+      }
+      else if (results.value == 0xE0E016E9) { //stop (ok button)
+        penup();
+        digitalWrite(AIN1, LOW);
+        digitalWrite(AIN2, LOW);
+        digitalWrite(BIN1, LOW);
+        digitalWrite(BIN2, LOW);
+      }
+
+      else if (results.value == 0xE0E020DF) { //1
+        pendown();
+        circle();
+        penup();
+      }
+
+      else if (results.value == 0xE0E0A05F) { //2
+        pendown();
+        halfcircle();
+        penup();
+      }
+
+      else if (results.value == 0xE0E0609F) { //3
+        pendown();
+        fatstar();
+        penup();
+      }
+
+      else if (results.value == 0xE0E010EF) { //4
+        pendown();
+        wave();
+        wave();
+        wave();
+        wave();
+        digitalWrite(AIN1, LOW);
+        digitalWrite(AIN2, LOW);
+        digitalWrite(BIN1, LOW);
+        digitalWrite(BIN2, LOW);
+        penup();
+      }
+
+      else if (results.value == 0xE0E0906F) { //5
+        pendown();
+        glasses();
+        digitalWrite(AIN1, LOW);
+        digitalWrite(AIN2, LOW);
+        digitalWrite(BIN1, LOW);
+        digitalWrite(BIN2, LOW);
+        penup();
+      }
+      irrecv.resume();
+    }
+  }
